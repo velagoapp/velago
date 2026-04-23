@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Create Account — VelaGo</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%230E6E7E'/><text y='.9em' font-size='62' x='10' font-family='serif' font-weight='900' fill='white'>V</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+:root{--ocean:#0E6E7E;--ocean2:#1388A2;--ink:#05111E;--pearl:#F9F8F4;--pearl2:#F2EFE6;--pearl3:#E4DED2;--mu:#42526B;--mu2:#7B8FA8;--f1:'Playfair Display',serif;--f2:'DM Sans',sans-serif;--sacred:#1B5C3E}
+html,body{min-height:100%;font-family:var(--f2)}
+body{background:var(--pearl);display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
+.left{position:relative;background:linear-gradient(155deg,#040D18,#07151F,#040D18);overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:2.5rem}
+.lbg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 30% 80%,rgba(14,110,126,.4),transparent 60%),radial-gradient(ellipse 50% 50% at 80% 10%,rgba(217,128,10,.12),transparent 55%)}
+.lgrid{position:absolute;inset:0;opacity:.04;background-image:linear-gradient(rgba(14,110,126,.8) 1px,transparent 1px),linear-gradient(90deg,rgba(14,110,126,.8) 1px,transparent 1px);background-size:52px 52px}
+.lc{position:relative;z-index:2}
+.logo{font-family:var(--f1);font-size:2.2rem;font-weight:800;color:#fff;letter-spacing:-1.5px;margin-bottom:.3rem}
+.logo em{color:#82D4E0;font-style:italic;font-weight:600}
+.ltag{font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:2.5rem}
+.lh{font-family:var(--f1);font-size:2rem;font-weight:700;color:#fff;line-height:1.2;letter-spacing:-.4px;margin-bottom:1.5rem}
+.lh em{color:#82D4E0;font-style:italic}
+.benefits{display:flex;flex-direction:column;gap:1.1rem}
+.ben{display:flex;align-items:flex-start;gap:.8rem}
+.ben-ico{width:34px;height:34px;border-radius:9px;background:rgba(14,110,126,.18);border:1px solid rgba(14,110,126,.28);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.ben-txt{font-size:.82rem;color:rgba(255,255,255,.5);line-height:1.5}
+.ben-txt strong{color:#fff;display:block;font-size:.86rem;margin-bottom:.05rem}
+.lfoot{position:relative;z-index:2;font-size:.64rem;color:rgba(255,255,255,.18)}
+.right{display:flex;align-items:center;justify-content:center;padding:2rem;background:var(--pearl)}
+.card{width:100%;max-width:440px;padding:.5rem 0}
+.back{display:inline-flex;align-items:center;gap:.35rem;font-size:.78rem;color:var(--mu);font-weight:600;text-decoration:none;margin-bottom:1.4rem;transition:color .15s}
+.back:hover{color:var(--ocean)}
+.back:hover svg{transform:translateX(-3px)}
+.back svg{transition:transform .15s}
+.title{font-family:var(--f1);font-size:1.72rem;font-weight:800;color:var(--ink);letter-spacing:-.4px;line-height:1.2;margin-bottom:.3rem}
+.sub{font-size:.83rem;color:var(--mu);margin-bottom:1.3rem}
+.sub a{color:var(--ocean);font-weight:700;text-decoration:none}
+.social-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:.65rem;padding:.75rem;border:1.5px solid var(--pearl3);border-radius:12px;background:#fff;font-size:.87rem;font-weight:600;color:var(--ink);cursor:pointer;transition:all .18s;font-family:var(--f2);margin-bottom:.5rem;position:relative}
+.social-btn:hover{border-color:var(--ocean);background:var(--pearl);transform:translateY(-1px)}
+.social-badge{position:absolute;right:.75rem;font-size:.64rem;font-weight:700;color:var(--ocean);background:rgba(14,110,126,.1);padding:.1rem .4rem;border-radius:4px}
+.div{display:flex;align-items:center;gap:.75rem;margin:.9rem 0}
+.div::before,.div::after{content:'';flex:1;height:1px;background:var(--pearl3)}
+.div span{font-size:.71rem;color:var(--mu2);font-weight:600}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:.72rem}
+.field{margin-bottom:.85rem}
+.field label{display:block;font-size:.73rem;font-weight:700;color:var(--ink);margin-bottom:.33rem}
+.field label .opt{font-weight:400;color:var(--mu2);font-size:.67rem;margin-left:.25rem}
+.fw{position:relative}
+.field input,.field select{width:100%;padding:.72rem .95rem;border:1.5px solid var(--pearl3);border-radius:12px;font-size:.87rem;color:var(--ink);background:#fff;font-family:var(--f2);outline:none;transition:all .18s;box-sizing:border-box;-webkit-appearance:none}
+.field input:focus,.field select:focus{border-color:var(--ocean);box-shadow:0 0 0 3px rgba(14,110,126,.08)}
+.field input::placeholder{color:var(--mu2)}
+.eye{position:absolute;right:.82rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--mu2);font-size:.88rem;padding:.2rem}
+.pwbars{display:flex;gap:.3rem;margin-top:.42rem}
+.pwbar{flex:1;height:3px;border-radius:2px;background:var(--pearl3);transition:background .25s}
+.pwlbl{font-size:.64rem;color:var(--mu2);margin-top:.22rem}
+.terms{display:flex;align-items:flex-start;gap:.48rem;margin:.1rem 0 1.1rem}
+.terms input{accent-color:var(--ocean);width:15px;height:15px;flex-shrink:0;margin-top:.14rem;cursor:pointer}
+.terms label{font-size:.76rem;color:var(--mu);line-height:1.5;cursor:pointer}
+.terms label a{color:var(--ocean);font-weight:700;text-decoration:none}
+.err{background:#FEE2E2;color:#B91C1C;font-size:.78rem;padding:.52rem .82rem;border-radius:8px;margin-bottom:.85rem;display:none;border:1px solid #FECACA}
+.btn{width:100%;padding:.8rem;background:linear-gradient(135deg,var(--ocean),var(--ocean2));color:#fff;border:none;border-radius:12px;font-size:.92rem;font-weight:700;cursor:pointer;font-family:var(--f2);transition:all .22s;box-shadow:0 4px 18px rgba(14,110,126,.28);display:flex;align-items:center;justify-content:center;gap:.42rem}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(14,110,126,.4)}
+.btn:disabled{opacity:.7;cursor:not-allowed;transform:none}
+.spin{width:15px;height:15px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+.btn.loading .spin{display:block}
+.foot{text-align:center;margin-top:1.1rem;font-size:.72rem;color:var(--mu2);line-height:1.6}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:768px){body{grid-template-columns:1fr}.left{display:none}.right{padding:1.5rem;align-items:flex-start;padding-top:2rem}.row2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="left">
+  <div class="lbg"></div><div class="lgrid"></div>
+  <div class="lc">
+    <div><div class="logo">Vela<em>Go</em></div><div class="ltag">Every Journey · One App</div></div>
+    <div>
+      <div class="lh">Join millions of<br>travelers using<br><em>VelaGo.</em></div>
+      <div class="benefits">
+        <div class="ben"><div class="ben-ico">💰</div><div class="ben-txt"><strong>IDR 0 booking fees, forever</strong>Best prices from 300+ airlines and 1.2M+ hotels — no markup.</div></div>
+        <div class="ben"><div class="ben-ico">🔔</div><div class="ben-txt"><strong>Price alerts on any route</strong>We monitor your routes 24/7 and notify you the moment prices drop.</div></div>
+        <div class="ben"><div class="ben-ico">🕌</div><div class="ben-txt"><strong>Full Umrah booking support</strong>Visa, hotels near Masjidil Haram, and transport in one account.</div></div>
+        <div class="ben"><div class="ben-ico">🔒</div><div class="ben-txt"><strong>Saved trips across all devices</strong>Your travel history, bookmarks, and preferences — anywhere.</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="lfoot">© 2026 VelaGo · New Era Aviation · velago.app</div>
+</div>
+
+<div class="right">
+  <div class="card">
+    <a href="/" class="back">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to VelaGo
+    </a>
+    <div class="title">Create your free account</div>
+    <div class="sub">Already have an account? <a href="/login.html">Sign in →</a></div>
+
+    <!-- Google — fastest path -->
+    <button class="social-btn" id="gbtn" onclick="signUpGoogle()">
+      <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Sign up with Google — Fastest
+      <span class="social-badge">No password needed</span>
+    </button>
+
+    <div class="div"><span>or create account with email</span></div>
+
+    <div id="err" class="err"></div>
+
+    <div class="row2">
+      <div class="field"><label>First Name</label><input type="text" id="first" placeholder="First name" autocomplete="given-name"></div>
+      <div class="field"><label>Last Name</label><input type="text" id="last" placeholder="Last name" autocomplete="family-name"></div>
+    </div>
+
+    <div class="field"><label>Email Address</label><input type="email" id="email" placeholder="you@email.com" autocomplete="email"></div>
+    <div class="field"><label>Phone <span class="opt">optional</span></label><input type="tel" id="phone" placeholder="+62 812 xxxx xxxx" autocomplete="tel"></div>
+
+    <div class="field">
+      <label>Nationality</label>
+      <select id="nat">
+        <option value="ID" selected>🇮🇩 Indonesia</option>
+        <option value="MY">🇲🇾 Malaysia</option>
+        <option value="SG">🇸🇬 Singapore</option>
+        <option value="SA">🇸🇦 Saudi Arabia</option>
+        <option value="AE">🇦🇪 UAE</option>
+        <option value="OTHER">🌏 Other</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Password</label>
+      <div class="fw">
+        <input type="password" id="pw" placeholder="Min. 8 characters" autocomplete="new-password" oninput="checkPw(this.value)" onkeydown="if(event.key==='Enter')doRegister()">
+        <button class="eye" onclick="togglePw()" type="button">👁</button>
+      </div>
+      <div class="pwbars" id="bars"><div class="pwbar" id="b1"></div><div class="pwbar" id="b2"></div><div class="pwbar" id="b3"></div><div class="pwbar" id="b4"></div></div>
+      <div class="pwlbl" id="pwlbl"></div>
+    </div>
+
+    <div class="terms">
+      <input type="checkbox" id="tc">
+      <label for="tc">I agree to VelaGo's <a href="https://app.termly.io/dashboard/website/386c1596-e7b6-40b8-af6a-cc274a6b28f3/terms-of-service" target="_blank">Terms of Service</a> and <a href="https://app.termly.io/dashboard/website/386c1596-e7b6-40b8-af6a-cc274a6b28f3/privacy-policy" target="_blank">Privacy Policy</a>. I agree to receive deal alerts from VelaGo.</label>
+    </div>
+
+    <button class="btn" id="reg-btn" onclick="doRegister()">
+      <span class="spin"></span>
+      Create Free Account
+    </button>
+
+    <div class="foot">Free forever · No credit card required · IDR 0 booking fees</div>
+  </div>
+</div>
+
+<script>
+// ── REPLACE THESE WITH YOUR SUPABASE CREDENTIALS ──
+const SUPABASE_URL  = 'YOUR_SUPABASE_URL_HERE';
+const SUPABASE_ANON = 'YOUR_SUPABASE_ANON_KEY_HERE';
+// ─────────────────────────────────────────────────
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+function showErr(m){const e=document.getElementById('err');e.textContent=m;e.style.display='block';e.scrollIntoView({behavior:'smooth',block:'nearest'})}
+function hideErr(){document.getElementById('err').style.display='none'}
+function setLoad(on){const b=document.getElementById('reg-btn');b.disabled=on;b.classList.toggle('loading',on)}
+function togglePw(){const i=document.getElementById('pw');i.type=i.type==='password'?'text':'password'}
+
+function checkPw(pw) {
+  const colors = ['#EF4444','#F59E0B','#22C55E','#16A34A'];
+  const labels = ['Weak','Fair','Good','Strong'];
+  let s = 0;
+  if(pw.length >= 8) s++;
+  if(pw.length >= 12) s++;
+  if(/[A-Z]/.test(pw) && /[0-9]/.test(pw)) s++;
+  if(/[^A-Za-z0-9]/.test(pw)) s++;
+  ['b1','b2','b3','b4'].forEach((id,i)=>{
+    document.getElementById(id).style.background = i < s ? colors[s-1] : 'var(--pearl3)';
+  });
+  const lbl = document.getElementById('pwlbl');
+  lbl.textContent = pw ? (labels[s-1] || '') : '';
+  lbl.style.color = colors[s-1] || 'var(--mu2)';
+}
+
+async function signUpGoogle() {
+  hideErr();
+  const btn = document.getElementById('gbtn');
+  btn.disabled = true;
+  btn.style.opacity = '.7';
+
+  const { error } = await sb.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin + '/?welcome=1' }
+  });
+
+  if (error) {
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    showErr('Google sign-up failed: ' + error.message);
+  }
+}
+
+async function doRegister() {
+  hideErr();
+  const first = (document.getElementById('first').value || '').trim();
+  const last  = (document.getElementById('last').value  || '').trim();
+  const email = (document.getElementById('email').value || '').trim().toLowerCase();
+  const phone = (document.getElementById('phone').value || '').trim();
+  const nat   = document.getElementById('nat').value;
+  const pw    = document.getElementById('pw').value;
+  const tc    = document.getElementById('tc').checked;
+
+  if (!first)  { showErr('Please enter your first name.'); return; }
+  if (!last)   { showErr('Please enter your last name.'); return; }
+  if (!email || !email.includes('@')) { showErr('Please enter a valid email address.'); return; }
+  if (pw.length < 8) { showErr('Password must be at least 8 characters.'); return; }
+  if (!tc) { showErr('Please agree to the Terms of Service to continue.'); return; }
+
+  setLoad(true);
+
+  const { data, error } = await sb.auth.signUp({
+    email,
+    password: pw,
+    options: {
+      data: { first_name: first, last_name: last, phone, nationality: nat },
+      emailRedirectTo: window.location.origin + '/?welcome=1'
+    }
+  });
+
+  if (error) {
+    setLoad(false);
+    if (error.message.includes('already registered')) {
+      showErr('This email is already registered. Please sign in instead.');
+    } else {
+      showErr(error.message);
+    }
+    return;
+  }
+
+  // Check if email confirmation required
+  if (data.user && data.session) {
+    window.location.href = '/?welcome=1';
+  } else {
+    // Email confirmation required
+    setLoad(false);
+    document.getElementById('err').style.display = 'none';
+    const card = document.querySelector('.card');
+    card.innerHTML = `
+      <div style="text-align:center;padding:2rem 0">
+        <div style="font-size:3.5rem;margin-bottom:1rem">📧</div>
+        <div style="font-family:var(--f1);font-size:1.5rem;font-weight:800;color:var(--ink);margin-bottom:.5rem">Check your email</div>
+        <div style="font-size:.88rem;color:var(--mu);max-width:300px;margin:0 auto 1.5rem;line-height:1.65">
+          We sent a confirmation link to <strong>${email}</strong>. 
+          Click the link to activate your account and start booking.
+        </div>
+        <a href="/" style="display:inline-block;padding:.72rem 1.8rem;background:linear-gradient(135deg,var(--ocean),var(--ocean2));color:#fff;border-radius:12px;font-size:.88rem;font-weight:700;text-decoration:none">
+          Return to VelaGo →
+        </a>
+      </div>`;
+  }
+}
+
+// Already logged in?
+sb.auth.getSession().then(({ data }) => {
+  if (data.session) window.location.href = '/';
+});
+
+document.getElementById('first').focus();
+</script>
+</body>
+</html>

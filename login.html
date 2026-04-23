@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Sign In — VelaGo</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%230E6E7E'/><text y='.9em' font-size='62' x='10' font-family='serif' font-weight='900' fill='white'>V</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Supabase JS SDK (open source, free) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+:root{--ocean:#0E6E7E;--ocean2:#1388A2;--ink:#05111E;--pearl:#F9F8F4;--pearl2:#F2EFE6;--pearl3:#E4DED2;--mu:#42526B;--mu2:#7B8FA8;--f1:'Playfair Display',serif;--f2:'DM Sans',sans-serif}
+html,body{height:100%;font-family:var(--f2)}
+body{background:var(--pearl);display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
+.left{position:relative;background:linear-gradient(155deg,#040D18,#07151F,#040D18);overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:2.5rem}
+.lbg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 30% 80%,rgba(14,110,126,.4),transparent 60%),radial-gradient(ellipse 50% 50% at 80% 10%,rgba(217,128,10,.12),transparent 55%)}
+.lgrid{position:absolute;inset:0;opacity:.04;background-image:linear-gradient(rgba(14,110,126,.8) 1px,transparent 1px),linear-gradient(90deg,rgba(14,110,126,.8) 1px,transparent 1px);background-size:52px 52px}
+.lc{position:relative;z-index:2}
+.logo{font-family:var(--f1);font-size:2.2rem;font-weight:800;color:#fff;letter-spacing:-1.5px;line-height:1;margin-bottom:.3rem}
+.logo em{color:#82D4E0;font-style:italic;font-weight:600}
+.ltag{font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:3rem}
+.lh{font-family:var(--f1);font-size:2.3rem;font-weight:700;color:#fff;line-height:1.18;letter-spacing:-.4px;margin-bottom:.9rem}
+.lh em{color:#82D4E0;font-style:italic}
+.lsub{font-size:.86rem;color:rgba(255,255,255,.44);line-height:1.72;max-width:310px}
+.lpills{display:flex;flex-wrap:wrap;gap:.38rem;margin-top:1.8rem}
+.lp{font-size:.62rem;font-weight:600;color:rgba(255,255,255,.48);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);padding:.18rem .62rem;border-radius:100px}
+.lfoot{position:relative;z-index:2;font-size:.65rem;color:rgba(255,255,255,.18);letter-spacing:.5px}
+.right{display:flex;align-items:center;justify-content:center;padding:2rem;background:var(--pearl)}
+.card{width:100%;max-width:420px}
+.back{display:inline-flex;align-items:center;gap:.35rem;font-size:.78rem;color:var(--mu);font-weight:600;text-decoration:none;margin-bottom:2rem;transition:color .15s}
+.back:hover{color:var(--ocean)}
+.back svg{transition:transform .15s}
+.back:hover svg{transform:translateX(-3px)}
+.title{font-family:var(--f1);font-size:1.85rem;font-weight:800;color:var(--ink);letter-spacing:-.5px;line-height:1.15;margin-bottom:.38rem}
+.sub{font-size:.84rem;color:var(--mu);margin-bottom:1.8rem;line-height:1.55}
+.sub a{color:var(--ocean);font-weight:700;text-decoration:none}
+.social-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:.65rem;padding:.78rem;border:1.5px solid var(--pearl3);border-radius:12px;background:#fff;font-size:.88rem;font-weight:600;color:var(--ink);cursor:pointer;transition:all .18s;font-family:var(--f2);margin-bottom:.6rem;position:relative}
+.social-btn:hover{border-color:var(--ocean);background:var(--pearl);transform:translateY(-1px);box-shadow:0 4px 16px rgba(14,110,126,.1)}
+.social-btn:active{transform:translateY(0)}
+.social-btn.loading{opacity:.7;cursor:not-allowed}
+.social-badge{position:absolute;right:.75rem;font-size:.65rem;font-weight:700;color:var(--ocean);background:rgba(14,110,126,.1);padding:.1rem .4rem;border-radius:4px}
+.div{display:flex;align-items:center;gap:.75rem;margin:1.2rem 0}
+.div::before,.div::after{content:'';flex:1;height:1px;background:var(--pearl3)}
+.div span{font-size:.72rem;color:var(--mu2);font-weight:600}
+.field{margin-bottom:1rem}
+.field label{display:block;font-size:.74rem;font-weight:700;color:var(--ink);margin-bottom:.38rem}
+.fw{position:relative}
+.field input{width:100%;padding:.75rem 1rem;border:1.5px solid var(--pearl3);border-radius:12px;font-size:.9rem;color:var(--ink);background:#fff;font-family:var(--f2);outline:none;transition:all .18s;box-sizing:border-box}
+.field input:focus{border-color:var(--ocean);box-shadow:0 0 0 3px rgba(14,110,126,.08)}
+.eye{position:absolute;right:.85rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--mu2);font-size:.9rem;padding:.2rem}
+.extras{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.35rem}
+.rem{display:flex;align-items:center;gap:.42rem;font-size:.78rem;color:var(--mu);cursor:pointer}
+.rem input{accent-color:var(--ocean);width:14px;height:14px}
+.forg{font-size:.78rem;color:var(--ocean);font-weight:700;text-decoration:none;cursor:pointer}
+.btn{width:100%;padding:.82rem;background:linear-gradient(135deg,var(--ocean),var(--ocean2));color:#fff;border:none;border-radius:12px;font-size:.93rem;font-weight:700;cursor:pointer;font-family:var(--f2);transition:all .22s;box-shadow:0 4px 18px rgba(14,110,126,.28);letter-spacing:.01em;display:flex;align-items:center;justify-content:center;gap:.45rem}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(14,110,126,.4)}
+.btn:disabled{opacity:.7;cursor:not-allowed;transform:none}
+.spin{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+.btn.loading .spin{display:block}
+.err{background:#FEE2E2;color:#B91C1C;font-size:.78rem;padding:.55rem .85rem;border-radius:8px;margin-bottom:.9rem;display:none;border:1px solid #FECACA}
+.suc{background:#DCFCE7;color:#166534;font-size:.78rem;padding:.55rem .85rem;border-radius:8px;margin-bottom:.9rem;display:none;border:1px solid #BBF7D0}
+.foot{text-align:center;margin-top:1.4rem;font-size:.74rem;color:var(--mu2);line-height:1.6}
+.foot a{color:var(--ocean)}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:768px){body{grid-template-columns:1fr}.left{display:none}.right{padding:1.5rem;align-items:flex-start;padding-top:2.5rem}}
+</style>
+</head>
+<body>
+
+<div class="left">
+  <div class="lbg"></div><div class="lgrid"></div>
+  <div class="lc">
+    <div><div class="logo">Vela<em>Go</em></div><div class="ltag">Every Journey · One App</div></div>
+    <div>
+      <div class="lh">Your trips.<br><em>Your account.</em><br>One place.</div>
+      <div class="lsub">Access your saved trips, booking history, price alerts, and personalized travel recommendations from any device.</div>
+      <div class="lpills">
+        <span class="lp">✈ Flights</span><span class="lp">🏨 Hotels</span>
+        <span class="lp">🕌 Umrah</span><span class="lp">🎭 Events</span>
+        <span class="lp">📱 eSIM</span><span class="lp">🔔 Price Alerts</span>
+      </div>
+    </div>
+  </div>
+  <div class="lfoot">© 2026 VelaGo · New Era Aviation · velago.app</div>
+</div>
+
+<div class="right">
+  <div class="card">
+    <a href="/" class="back">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to VelaGo
+    </a>
+    <div class="title">Welcome back</div>
+    <div class="sub">No account yet? <a href="/register.html">Create one free →</a></div>
+
+    <div id="err" class="err"></div>
+    <div id="suc" class="suc"></div>
+
+    <!-- Google Sign In — most important button -->
+    <button class="social-btn" id="google-btn" onclick="signInGoogle()">
+      <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continue with Google
+      <span class="social-badge">Recommended</span>
+    </button>
+
+    <div class="div"><span>or sign in with email</span></div>
+
+    <div class="field">
+      <label>Email address</label>
+      <input type="email" id="email" placeholder="you@email.com" autocomplete="email" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <div class="fw">
+        <input type="password" id="pw" placeholder="Enter your password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+        <button class="eye" onclick="togglePw()" type="button">👁</button>
+      </div>
+    </div>
+    <div class="extras">
+      <label class="rem"><input type="checkbox" id="rem" checked> Remember me</label>
+      <span class="forg" onclick="doForgot()">Forgot password?</span>
+    </div>
+
+    <button class="btn" id="login-btn" onclick="doLogin()">
+      <span class="spin" id="spin"></span>
+      Sign In to VelaGo
+    </button>
+
+    <div class="foot">
+      By signing in you agree to our
+      <a href="https://app.termly.io/dashboard/website/386c1596-e7b6-40b8-af6a-cc274a6b28f3/terms-of-service" target="_blank">Terms</a>
+      and <a href="https://app.termly.io/dashboard/website/386c1596-e7b6-40b8-af6a-cc274a6b28f3/privacy-policy" target="_blank">Privacy Policy</a>.
+    </div>
+  </div>
+</div>
+
+<script>
+// ── REPLACE THESE TWO VALUES WITH YOUR SUPABASE CREDENTIALS ──
+// Get them from: supabase.com → Your Project → Settings → API
+const SUPABASE_URL  = 'YOUR_SUPABASE_URL_HERE';
+const SUPABASE_ANON = 'YOUR_SUPABASE_ANON_KEY_HERE';
+// ─────────────────────────────────────────────────────────────
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+function showErr(m){const e=document.getElementById('err');e.textContent=m;e.style.display='block';document.getElementById('suc').style.display='none'}
+function showSuc(m){const e=document.getElementById('suc');e.textContent=m;e.style.display='block';document.getElementById('err').style.display='none'}
+function hideMsg(){document.getElementById('err').style.display='none';document.getElementById('suc').style.display='none'}
+function setLoad(on){const b=document.getElementById('login-btn');const s=document.getElementById('spin');b.disabled=on;b.classList.toggle('loading',on);s.style.display=on?'block':'none'}
+function togglePw(){const i=document.getElementById('pw');i.type=i.type==='password'?'text':'password'}
+
+async function signInGoogle() {
+  hideMsg();
+  const btn = document.getElementById('google-btn');
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  const { error } = await sb.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: window.location.origin + '/?welcome=1'
+    }
+  });
+
+  if (error) {
+    btn.classList.remove('loading');
+    btn.disabled = false;
+    showErr('Google sign-in failed: ' + error.message);
+  }
+  // On success, Supabase redirects automatically
+}
+
+async function doLogin() {
+  hideMsg();
+  const email = document.getElementById('email').value.trim().toLowerCase();
+  const pw    = document.getElementById('pw').value;
+
+  if (!email || !email.includes('@')) { showErr('Please enter a valid email address.'); return; }
+  if (!pw) { showErr('Please enter your password.'); return; }
+
+  setLoad(true);
+
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pw });
+
+  if (error) {
+    setLoad(false);
+    if (error.message.includes('Invalid login')) {
+      showErr('Incorrect email or password. Please try again.');
+    } else if (error.message.includes('Email not confirmed')) {
+      showErr('Please check your email and confirm your account first.');
+    } else {
+      showErr(error.message);
+    }
+    return;
+  }
+
+  // Success — redirect to home
+  window.location.href = '/?welcome=1';
+}
+
+async function doForgot() {
+  const email = document.getElementById('email').value.trim().toLowerCase();
+  if (!email || !email.includes('@')) {
+    showErr('Enter your email address above, then click "Forgot password".');
+    return;
+  }
+  hideMsg();
+  const { error } = await sb.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/reset-password'
+  });
+  if (error) {
+    showErr('Could not send reset email: ' + error.message);
+  } else {
+    showSuc('Password reset link sent to ' + email + '. Check your inbox (and spam folder).');
+  }
+}
+
+// Check if already logged in
+sb.auth.getSession().then(({ data }) => {
+  if (data.session) {
+    window.location.href = '/';
+  }
+});
+
+document.getElementById('email').focus();
+</script>
+</body>
+</html>
